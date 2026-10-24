@@ -31,3 +31,7 @@ dotnet publish src/DiscordWebhook -c Release -o publish/DiscordWebhook
 ```
 
 產物是 framework-dependent 的 dll，執行的機器要有 .NET 10 runtime。McpGateway 的映像檔（`aspnet:10.0`）已經有了。
+
+## 授權
+
+[MIT](LICENSE)

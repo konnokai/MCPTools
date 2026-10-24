@@ -11,6 +11,15 @@ MCP server 合集。每個工具是 `src/<名稱>/` 下的一個 console 專案�
 - 給 AI 看的錯誤用 `McpException` 丟，訊息要讓 AI 知道怎麼改。訊息裡不能有密鑰（例如 webhook 網址裡的 token）。
 - 工具說明（`[Description]`）用英文。程式碼註解用中文，只寫為什麼。
 
+## 新增工具
+
+照 `src/DiscordWebhook` 的做法：
+
+1. `src/<名稱>/<名稱>.csproj`（`OutputType` 是 `Exe`），套件只寫 `PackageReference Include`，版本加到 `Directory.Packages.props`。
+2. `tests/<名稱>.Tests/`，用 xunit.v3。HTTP 用假的 `HttpMessageHandler` 測，不要打真的服務。
+3. 兩個專案都加進 `MCPTools.slnx`（`dotnet sln MCPTools.slnx add ...`）。
+4. 寫 `src/<名稱>/README.md`：環境變數、工具清單、McpGateway 的 `mcp.json` 範例。在根目錄 `README.md` 的工具表加一行。
+
 ## 驗證
 
 - `dotnet test --solution MCPTools.slnx -c Release`（Microsoft.Testing.Platform 模式，不能省略 `--solution`）
