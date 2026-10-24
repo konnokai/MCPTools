@@ -76,6 +76,29 @@
 
 7. 之後更新：`git pull`，再跑一次 `./publish.sh`，然後 `docker compose restart mcp-gateway`。
 
+## 給 opencode 用（v2 格式）
+
+先跑 `./publish.sh`，再在 `opencode.jsonc` 加上。檔案可以放在專案根目錄，或放在全域的 `~/.config/opencode/`：
+
+```jsonc
+{
+  "mcp": {
+    "servers": {
+      "discord-webhook": {
+        "type": "local",
+        "command": ["dotnet", "E:/Project/MCPTools/publish/DiscordWebhook/DiscordWebhook.dll"],
+        "environment": { "DISCORD_WEBHOOKS": "{env:DISCORD_WEBHOOKS}" }
+      }
+    }
+  }
+}
+```
+
+- v2 的 server 要放在 `mcp.servers` 底下，不是直接放在 `mcp` 底下。
+- `command` 是陣列，第一個是執行檔，後面是參數。路徑改成你實際發佈的位置。
+- `{env:DISCORD_WEBHOOKS}` 會換成 opencode 環境裡的變數。這個變數沒設定時，server 會印出錯誤然後結束，工具不會出現。
+- 要先關掉這個 server 時，加上 `"disabled": true`。
+
 ## 給 Claude Code 用
 
 先在系統設定使用者環境變數 `DISCORD_WEBHOOKS`，再在 `.mcp.json` 加上：
