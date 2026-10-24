@@ -19,6 +19,7 @@ MCP server 合集。每個工具是 `src/<名稱>/` 下的一個 console 專案�
 2. `tests/<名稱>.Tests/`，用 xunit.v3。HTTP 用假的 `HttpMessageHandler` 測，不要打真的服務。
 3. 兩個專案都加進 `MCPTools.slnx`（`dotnet sln MCPTools.slnx add ...`）。
 4. 寫 `src/<名稱>/README.md`：環境變數、工具清單、McpGateway 的 `mcp.json` 範例。在根目錄 `README.md` 的工具表加一行。
+5. `publish.sh` 會發佈 `src/` 底下每個專案，不用改它。
 
 ## 驗證
 

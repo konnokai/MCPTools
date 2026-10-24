@@ -23,8 +23,10 @@
 | 工具 | 說明 |
 |---|---|
 | `list_webhooks` | 列出可以用的名稱 |
-| `send_message` | 參數 `webhook`（名稱）和 `content`（1 到 2000 個字元）。成功時回傳訊息 ID |
+| `send_message` | 參數 `webhook`（名稱）、`content`（文字，最多 2000 個字元）、`embeds`（最多 10 個）。`content` 和 `embeds` 至少給一個。成功時回傳訊息 ID |
 
+- embed 的欄位跟 Discord API 一樣：`title`、`description`、`url`、`color`、`fields`（`name`、`value`、`inline`）、`footer`（`text`、`icon_url`）、`author`（`name`、`url`、`icon_url`）、`image`（`url`）、`thumbnail`（`url`）、`timestamp`。
+- 送出前會先檢查：最多 10 個 embed，所有 embed 的 title、description、fields、footer、author 加起來最多 6000 個字元。單一欄位的長度上限（例如 title 256、description 4096）交給 Discord 檢查，Discord 回 400 時會把哪個欄位錯了一起轉給 AI。
 - 不設定 username 和 avatar。訊息用 webhook 在 Discord 上設定的名稱和頭像。
 - 不會通知任何人。送出時 `allowed_mentions` 是空的，`@everyone`、`@here`、`<@使用者 ID>` 會照樣顯示，但不會 ping。
 - 被 Discord 限速時回錯誤，附上要等幾秒，不會自己重試。
@@ -32,13 +34,13 @@
 
 ## 給 McpGateway 用
 
-1. 發佈：
+1. 在伺服器 clone 這個 repo，發佈到 bot 的 `docker-compose.yml` 旁邊的 `mcp-tools/`（說明見根目錄 README 的「發佈」）：
 
-   ```powershell
-   dotnet publish src/DiscordWebhook -c Release -o publish/DiscordWebhook
+   ```bash
+   ./publish.sh /root/bot/nadeko-docker/mcp-tools
    ```
 
-2. 把 `publish/DiscordWebhook/` 複製到伺服器，放在 bot 的 `docker-compose.yml` 旁邊的 `mcp-tools/DiscordWebhook/`。
+2. 確認有 `mcp-tools/DiscordWebhook/DiscordWebhook.dll`。
 
 3. `.env` 加上設定。用單引號包住，JSON 裡的雙引號才不會被拿掉：
 
@@ -71,6 +73,8 @@
    - AI 看到的工具名稱是 `discord-webhook__list_webhooks` 和 `discord-webhook__send_message`。
 
 6. 改完 compose 要 `docker compose up -d mcp-gateway`，環境變數和掛載才會生效。只改 `mcp.json` 的話不用重啟。
+
+7. 之後更新：`git pull`，再跑一次 `./publish.sh`，然後 `docker compose restart mcp-gateway`。
 
 ## 給 Claude Code 用
 
