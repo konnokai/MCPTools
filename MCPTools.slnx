@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/DiscordWebhook/DiscordWebhook.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/DiscordWebhook.Tests/DiscordWebhook.Tests.csproj" />
+  </Folder>
+</Solution>
